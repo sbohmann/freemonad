@@ -74,3 +74,14 @@ Their output will show:
 - count >>= count >>= count >>= count, called with 7 as the initial argument, using the bindLast interpreter
 
 count is a function that for e.g. 3 returns \[0, 1, 2], counting from zero up to one less than three.
+
+## The Missing Optimization
+
+Bind's lhs will be traversed, seeking the original Pure's result, a lot of times
+when a lot of functions are bound together and a lot of results are processed.
+
+I will add an optimized version of the example, which will eliminate the recursive search for
+the result by discriminating between Pure and Bind in Bind's constructor.
+
+This will probably be perfectly readable after having understood the introductory and minimal
+examples but not serve as a good starting point 🙂
