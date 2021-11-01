@@ -24,6 +24,15 @@ A lifted function is a function that returns a Free instead of an M.
 lift(f) takes a function f that returns an M and turns it into a function that instead returns a Pure
 that contains the result of calling f.
 
+A Pure contains an M, which is the result of a call of a lifted function.
+
+A Bind contains a Free, named lhs, and a lifted function, named rhs.
+
+lhs, rhs correspond to "left-hand side" and right-hand side, as would be the order in lhs >>= rhs,
+if a bind operator >>= was used.
+
+Control and data flow from lhs to rhs. 
+
 ## The Two Examples
 
 There are two examples, one using simple data structures that use a String as a discriminator,
