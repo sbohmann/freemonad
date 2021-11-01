@@ -1,20 +1,20 @@
 // A Free is either a Pure or a Bind
 let Free = {
     bind(next) {
-        return Bind((x) => this, next)
+        return Bind(this, next)
     }
 }
 
-// A Pure contains a function f that does *not* return a Free<M> but an M, plus its argument value x
-function Pure(x) {
+// A Pure contains a value x
+function Pure(result) {
     return {
         ...Free,
         type: 'Pure',
-        x
+        result
     }
 }
 
-// A Bind contains two functions, lhs and rhs, that return a Free<M>
+// A Bind contains a Free lhs and a function rhs that returns a Free<M>
 function Bind(lhs, rhs) {
     return {
         ...Free,
@@ -29,7 +29,7 @@ function lift(f) {
 }
 
 // the equivalent of the >>= operator
-function bind(... functions) {
+function bind(...functions) {
     let result = functions[0]
     for (let next of functions.slice(1)) {
         let previousResult = result
@@ -51,36 +51,42 @@ let bound = bind(lifted, lifted, lifted)
 
 // an interpreter
 function flatMap(f, x) {
-    let next = f(x)
-    if (next.type === 'Pure') {
-        return next.x
-    } else if (next.type === 'Bind') {
-        let result = []
-        let lhsResult = flatMap(next.lhs, x)
-        for (let lhsValue of lhsResult) {
-            result.push(...flatMap(next.rhs, lhsValue))
+    function handleNext(next) {
+        if (next.type === 'Pure') {
+            return next.result
+        } else if (next.type === 'Bind') {
+            let result = []
+            let lhsResult = handleNext(next.lhs)
+            for (let lhsValue of lhsResult) {
+                result.push(...flatMap(next.rhs, lhsValue))
+            }
+            return result
+        } else {
+            throw new RangeError('Unknown Free type: [' + next.type + ']')
         }
-        return result
-    } else {
-        throw new RangeError('Unknown Free type: [' + next.type + ']')
     }
+
+    return handleNext(f(x))
 }
 
 // another interpreter
 function bindLast(f, x) {
-    let next = f(x)
-    if (next.type === 'Pure') {
-        return next.x
-    } else if (next.type === 'Bind') {
-        let result = []
-        let lhsResult = bindLast(next.lhs, x)
-        for (let lhsValue of lhsResult.slice(lhsResult.length - 1)) {
-            result.push(...bindLast(next.rhs, lhsValue))
+    function handleNext(next) {
+        if (next.type === 'Pure') {
+            return next.result
+        } else if (next.type === 'Bind') {
+            let result = []
+            let lhsResult = handleNext(next.lhs)
+            for (let lhsValue of lhsResult.slice(lhsResult.length - 1)) {
+                result.push(...bindLast(next.rhs, lhsValue))
+            }
+            return result
+        } else {
+            throw new RangeError('Unknown Free type: [' + next.type + ']')
         }
-        return result
-    } else {
-        throw new RangeError('Unknown Free type: [' + next.type + ']')
     }
+
+    return handleNext(f(x))
 }
 
 const n = 7
