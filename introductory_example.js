@@ -28,6 +28,16 @@ function lift(f) {
     return (x) => Pure(f)
 }
 
+// the equivalent of the >>= operator
+function bind(... functions) {
+    let result = functions[0]
+    for (let next of functions.slice(1)) {
+        let previousResult = result
+        result = (x) => previousResult(x).bind(next)
+    }
+    return result
+}
+
 function count(n) {
     let result = []
     for (let i = 0; i < n; ++i) {
@@ -37,10 +47,7 @@ function count(n) {
 }
 
 let lifted = lift(count)
-
-// manual binding in lieu of an >>= operator
-let bound = (x) => lifted(x).bind(lifted)
-let doubleBound = (x) => bound(x).bind(lifted)
+let bound = bind(lifted, lifted, lifted)
 
 // an interpreter
 function flatMap(f, x) {
@@ -62,7 +69,7 @@ function flatMap(f, x) {
 const n = 7
 
 // using the flatMap interpreter
-console.log(flatMap(doubleBound, n))
+console.log(flatMap(bound, n))
 
 // using Array.flatMap
 console.log(count(n).flatMap(count).flatMap(count))
