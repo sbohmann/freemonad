@@ -5,17 +5,17 @@ let Free = {
     }
 }
 
-// A Pure contains a function f that does *not* return a Free<M> but an M
-function Pure(x) {
+// A Pure contains a result value
+function Pure(result) {
     return {
         ...Free,
         accept(interpreter) {
-            return interpreter.pure(x)
+            return interpreter.pure(result)
         }
     }
 }
 
-// A Bind contains two functions, lhs and rhs, that return a Free<M>
+// A Bind contains a Free lhs and a function rhs that returns a Free<M>
 function Bind(lhs, rhs) {
     return {
         ...Free,

@@ -5,7 +5,7 @@ let Free = {
     }
 }
 
-// A Pure contains a value x
+// A Pure contains a result value
 function Pure(result) {
     return {
         ...Free,
