@@ -97,5 +97,5 @@ console.log(flatMap(bound, n))
 // using Array.flatMap
 console.log(count(n).flatMap(count).flatMap(count))
 
-// using the bindFirst interpreter
+// using the bindLast interpreter
 console.log(bindLast(bound, n))
