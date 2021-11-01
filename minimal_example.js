@@ -9,7 +9,7 @@ let Free = {
 function Pure(f, x) {
     return {
         ...Free,
-        accept(interpreter, x) {
+        accept(interpreter) {
             return interpreter.pure(f(x))
         }
     }
@@ -26,7 +26,7 @@ function Bind(lhs, rhs) {
 }
 
 function lift(f) {
-    return (x) => Pure(f, x)
+    return (x) => Pure(x)
 }
 
 // the equivalent of the >>= operator
