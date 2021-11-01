@@ -6,11 +6,11 @@ let Free = {
 }
 
 // A Pure contains a function f that does *not* return a Free<M> but an M
-function Pure(f, x) {
+function Pure(x) {
     return {
         ...Free,
         accept(interpreter) {
-            return interpreter.pure(f(x))
+            return interpreter.pure(x)
         }
     }
 }
@@ -26,7 +26,7 @@ function Bind(lhs, rhs) {
 }
 
 function lift(f) {
-    return (x) => Pure(x)
+    return (x) => Pure(f(x))
 }
 
 // the equivalent of the >>= operator
