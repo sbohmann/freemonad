@@ -6,11 +6,11 @@ let Free = {
 }
 
 // A Pure contains a function f that does *not* return a Free<M> but an M
-function Pure(f) {
+function Pure(f, x) {
     return {
         ...Free,
         accept(interpreter, x) {
-            return interpreter.pure(f, x)
+            return interpreter.pure(f(x))
         }
     }
 }
@@ -26,7 +26,7 @@ function Bind(lhs, rhs) {
 }
 
 function lift(f) {
-    return (x) => Pure(f)
+    return (x) => Pure(f, x)
 }
 
 // the equivalent of the >>= operator
@@ -55,8 +55,8 @@ let flatMap = {
     run(f, x) {
         return f(x).accept(this, x)
     },
-    pure(f, x) {
-        return f(x)
+    pure(x) {
+        return x
     },
     bind(lhs, rhs, x) {
         let result = []
@@ -73,8 +73,8 @@ let bindLast = {
     run(f, x) {
         return f(x).accept(this, x)
     },
-    pure(f, x) {
-        return f(x)
+    pure(x) {
+        return x
     },
     bind(lhs, rhs, x) {
         let result = []
