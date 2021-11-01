@@ -66,6 +66,23 @@ function flatMap(f, x) {
     }
 }
 
+// another interpreter
+function bindLast(f, x) {
+    let next = f(x)
+    if (next.type === 'Pure') {
+        return next.f(x)
+    } else if (next.type === 'Bind') {
+        let result = []
+        let lhsResult = bindLast(next.lhs, x)
+        for (let lhsValue of lhsResult.slice(lhsResult.length - 1)) {
+            result.push(...bindLast(next.rhs, lhsValue))
+        }
+        return result
+    } else {
+        throw new RangeError('Unknown Free type: [' + next.type + ']')
+    }
+}
+
 const n = 7
 
 // using the flatMap interpreter
@@ -73,3 +90,6 @@ console.log(flatMap(bound, n))
 
 // using Array.flatMap
 console.log(count(n).flatMap(count).flatMap(count))
+
+// using the bindFirst interpreter
+console.log(bindLast(bound, n))

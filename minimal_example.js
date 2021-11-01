@@ -68,6 +68,24 @@ let flatMap = {
     }
 }
 
+// another interpreter
+let bindLast = {
+    run(f, x) {
+        return f(x).accept(this, x)
+    },
+    pure(f, x) {
+        return f(x)
+    },
+    bind(lhs, rhs, x) {
+        let result = []
+        let lhsResult = this.run(lhs, x)
+        for (let lhsValue of lhsResult.slice(lhsResult.length - 1)) {
+            result.push(...this.run(rhs, lhsValue))
+        }
+        return result
+    }
+}
+
 const n = 7
 
 // using the flatMap interpreter
@@ -75,3 +93,6 @@ console.log(flatMap.run(bound, n))
 
 // using Array.flatMap
 console.log(count(n).flatMap(count).flatMap(count))
+
+// using the bindFirst interpreter
+console.log(bindLast.run(bound, n))
