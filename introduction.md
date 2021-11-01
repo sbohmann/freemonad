@@ -31,7 +31,15 @@ A Bind contains a Free, named lhs, and a lifted function, named rhs.
 lhs, rhs correspond to "left-hand side" and right-hand side, as would be the order in lhs >>= rhs,
 if a bind operator >>= was used.
 
-Control and data flow from lhs to rhs. 
+Control and data flow from lhs to rhs.
+
+bind(...) is the equivalent of >>=
+
+- bind() returns undefined
+- bind(f) returns f
+- bind(f, g) returns the equivalent of f >>= g
+- bind(f, g, h) returns the equivalent of f >>= g >>= h
+- &c.
 
 ## The Two Examples
 
