@@ -1,15 +1,23 @@
-function Pure(f) {
-    return {
-        type: 'Pure',
-        f,
-        bind(next) {
-            return Bind((x) => this, next)
-        }
+// A Free is either a Pure or a Bind
+let Free = {
+    bind(next) {
+        return Bind((x) => this, next)
     }
 }
 
+// A Pure contains a function f that does *not* return a Free<M> but an M
+function Pure(f) {
+    return {
+        ... Free,
+        type: 'Pure',
+        f
+    }
+}
+
+// A Bind contains two functions, lhs and rhs, that return a Free<M>
 function Bind(lhs, rhs) {
     return {
+        ... Free,
         type: 'Bind',
         lhs,
         rhs
@@ -28,12 +36,11 @@ function count(n) {
     return result
 }
 
-console.log(lift(count)(7))
-
 let lifted = lift(count)
 
 // manual binding in lieu of an >>= operator
 let bound = (x) => lifted(x).bind(lifted)
+let doubleBound = (x) => bound(x).bind(lifted)
 
 // an interpreter
 function flatMap(f, x) {
@@ -52,4 +59,10 @@ function flatMap(f, x) {
     }
 }
 
-console.log(flatMap(bound, 7))
+const n = 7
+
+// using the flatMap interpreter
+console.log(flatMap(doubleBound, n))
+
+// using Array.flatMap
+console.log(count(n).flatMap(count).flatMap(count))
