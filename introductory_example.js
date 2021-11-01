@@ -8,7 +8,7 @@ let Free = {
 // A Pure contains a function f that does *not* return a Free<M> but an M
 function Pure(f) {
     return {
-        ... Free,
+        ...Free,
         type: 'Pure',
         f
     }
@@ -17,7 +17,7 @@ function Pure(f) {
 // A Bind contains two functions, lhs and rhs, that return a Free<M>
 function Bind(lhs, rhs) {
     return {
-        ... Free,
+        ...Free,
         type: 'Bind',
         lhs,
         rhs
