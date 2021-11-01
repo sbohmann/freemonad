@@ -1,7 +1,7 @@
 // A Free is either a Pure or a Bind
 let Free = {
     bind(next) {
-        return Bind((x) => this, next)
+        return Bind(this, next)
     }
 }
 
@@ -19,8 +19,8 @@ function Pure(x) {
 function Bind(lhs, rhs) {
     return {
         ...Free,
-        accept(interpreter, x) {
-            return interpreter.bind(lhs, rhs, x)
+        accept(interpreter) {
+            return interpreter.bind(lhs, rhs)
         }
     }
 }
@@ -58,9 +58,9 @@ let flatMap = {
     pure(x) {
         return x
     },
-    bind(lhs, rhs, x) {
+    bind(lhs, rhs) {
         let result = []
-        let lhsResult = this.run(lhs, x)
+        let lhsResult = lhs.accept(this)
         for (let lhsValue of lhsResult) {
             result.push(...this.run(rhs, lhsValue))
         }
@@ -76,9 +76,9 @@ let bindLast = {
     pure(x) {
         return x
     },
-    bind(lhs, rhs, x) {
+    bind(lhs, rhs) {
         let result = []
-        let lhsResult = this.run(lhs, x)
+        let lhsResult = lhs.accept(this)
         for (let lhsValue of lhsResult.slice(lhsResult.length - 1)) {
             result.push(...this.run(rhs, lhsValue))
         }
