@@ -15,7 +15,7 @@ e.g. at the time of execution.
 
 A Free is a data structure used by an interpreter.
 
-A Free can be a Pure or a Bind (A Bind is also sometimes called Roll, FlatMap, &c.).
+A Free is either a Pure or a Bind (A Bind is also sometimes called Roll, FlatMap, &c.).
 
 M is the term used for the functions' result type, like a List, Set, Observable, ..., as mentioned above.
 
