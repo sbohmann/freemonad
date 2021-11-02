@@ -49,7 +49,7 @@ when trying to grasp what is a Free Mondad.
 
 The other one uses callbacks, which makes the implementation of interpreters much more pleasant. 
 
-### Using Discriminator Strings: [https://github.com/sbohmann/freemonad/blob/master/introductory_example.js](introductory_example.js)
+### Using Discriminator Strings: [introductory_example.js](https://github.com/sbohmann/freemonad/blob/master/introductory_example.js)
 
 This example defines Pure and Bind as procedural-style data structures with String discriminators.
 
