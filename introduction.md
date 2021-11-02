@@ -56,7 +56,7 @@ This example defines Pure and Bind as procedural-style data structures with Stri
 This eliminates having to think about these data structures as functions when at the same time
 everything is already full of functions.
 
-### Using Callbacks: [https://github.com/sbohmann/freemonad/blob/master/minimal_example.js](minimal_example.js)
+### Using Callbacks: [minimal_example.js](https://github.com/sbohmann/freemonad/blob/master/minimal_example.js)
 
 This example uses callbacks, which makes the interpreters' implementation so much more straightforward
 at the cost of adding one more layer of functions to an already extremely functional topic.
