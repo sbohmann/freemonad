@@ -84,4 +84,4 @@ I will add an optimized version of the example, which will eliminate the recursi
 the result by discriminating between Pure and Bind in Bind's constructor.
 
 This will probably be perfectly readable after having understood the introductory and minimal
-examples but not serve as a good starting point 🙂
+examples but not serve as a good starting point.
