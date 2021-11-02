@@ -63,7 +63,7 @@ at the cost of adding one more layer of functions to an already extremely functi
 
 The methods called "accept" are named like this because the callbacks are part of the Visitor pattern. 
 
-### What Do the Examples Demonstrate?
+### What Do The Examples Demonstrate?
 
 Both examples contain two different interpreters each.
 
