@@ -29,10 +29,6 @@ function lift(f) {
     return (x) => Pure(f(x))
 }
 
-function pure(x) {
-    return value => Pure(value)
-}
-
 // the equivalent of the >>= operator
 function bind(...functions) {
     let result = functions[0]
@@ -59,16 +55,17 @@ let flatMap = {
     run(f, x) {
         return f(x).accept(this, x)
     },
-    pure(x) {
-        return x
+    pure(f) {
+        return x => f(x)
     },
     bind(lhs, rhs) {
-        let result = []
-        let lhsResult = lhs.accept(this)
-        for (let lhsValue of lhsResult) {
-            result.push(...this.run(rhs, lhsValue))
+        return x => {
+            let result = []
+            for (let lhsValue of x) {
+                result.push(...this.run(rhs, lhsValue))
+            }
+            return result
         }
-        return result
     }
 }
 
@@ -77,16 +74,17 @@ let bindLast = {
     run(f, x) {
         return f(x).accept(this, x)
     },
-    pure(x) {
-        return x
+    pure(f) {
+        return x => f(x)
     },
     bind(lhs, rhs) {
-        let result = []
-        let lhsResult = lhs.accept(this)
-        for (let lhsValue of lhsResult.slice(lhsResult.length - 1)) {
-            result.push(...this.run(rhs, lhsValue))
+        return x => {
+            let result = []
+            for (let lhsValue of x.slice(x.length - 1)) {
+                result.push(...this.run(rhs, lhsValue))
+            }
+            return result
         }
-        return result
     }
 }
 
@@ -117,18 +115,14 @@ let exampleFunction = bind(
         return result
     }),
     x => {
-        if (x % 2 === 0 || true) {
-            return pure(x)
+        if (x % 2 === 0) {
+            return Pure([x])
         } else {
-            return lift(
-                x => {
-                    let result = []
-                    for (let n = 0; n < x; ++n) {
-                        result.push(n.toString())
-                    }
-                    return result
-                }
-            )
+            let result = []
+            for (let n = 0; n < x; ++n) {
+                result.push(n.toString())
+            }
+            return Pure(result)
         }
     }
 )
