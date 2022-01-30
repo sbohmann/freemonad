@@ -129,4 +129,4 @@ let exampleFunction = bind(
     }
 )
 
-flatMap.run(exampleFunction)
+console.log(flatMap.run(exampleFunction, n))
