@@ -52,7 +52,7 @@ let bound = bind(lifted, lifted, lifted)
 
 // an interpreter
 let flatMap = {
-    run(f, x) {
+    run(f) {
         return f(x).accept(this, x)
     },
     pure(f) {
