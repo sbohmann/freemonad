@@ -96,3 +96,37 @@ console.log(count(n).flatMap(count).flatMap(count))
 
 // using the bindLast interpreter
 console.log(bindLast.run(bound, n))
+
+let exampleFunction = bind(
+    lift(n => {
+        if (n % 2 === 0) {
+            return [n, n * 3, n * 9]
+        } else {
+            return [n]
+        }
+    }),
+    lift(x => {
+        let result = []
+        for (let n = 0; n < x; ++n) {
+            result.push(n)
+        }
+        return result
+    }),
+    x => {
+        if (x % 2 === 0) {
+            return Pure(x)
+        } else {
+            return lift(
+                x => {
+                    let result = []
+                    for (let n = 0; n < x; ++n) {
+                        result.push(n.toString())
+                    }
+                    return result
+                }
+            )
+        }
+    }
+)
+
+flatMap.run(exampleFunction)
