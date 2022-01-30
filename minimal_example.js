@@ -127,4 +127,4 @@ let exampleFunction = bind(
     }
 )
 
-console.log(flatMap.run(exampleFunction, n))
+console.log(flatMap.compose(exampleFunction)(n))
