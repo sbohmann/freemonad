@@ -49,21 +49,21 @@ when trying to grasp what is a Free Mondad.
 
 The other one uses callbacks, which makes the implementation of interpreters much more pleasant. 
 
-### Using Discriminator Strings: introductory_example.js
+### Using Discriminator Strings: [introductory_example.js](https://github.com/sbohmann/freemonad/blob/master/introductory_example.js)
 
 This example defines Pure and Bind as procedural-style data structures with String discriminators.
 
 This eliminates having to think about these data structures as functions when at the same time
 everything is already full of functions.
 
-### Using Callbacks: minimal_example.js
+### Using Callbacks: [minimal_example.js](https://github.com/sbohmann/freemonad/blob/master/minimal_example.js)
 
 This example uses callbacks, which makes the interpreters' implementation so much more straightforward
 at the cost of adding one more layer of functions to an already extremely functional topic.
 
 The methods called "accept" are named like this because the callbacks are part of the Visitor pattern. 
 
-### What Do the Examples Demonstrate?
+### What Do The Examples Demonstrate?
 
 Both examples contain two different interpreters each.
 
@@ -84,4 +84,4 @@ I will add an optimized version of the example, which will eliminate the recursi
 the result by discriminating between Pure and Bind in Bind's constructor.
 
 This will probably be perfectly readable after having understood the introductory and minimal
-examples but not serve as a good starting point 🙂
+examples but not serve as a good starting point.
