@@ -6,11 +6,11 @@ let Free = {
 }
 
 // A Pure contains a result value
-function Pure(result) {
+function Pure(f) {
     return {
         ...Free,
         accept(interpreter) {
-            return interpreter.pure(result)
+            return interpreter.pure(f)
         }
     }
 }
@@ -52,8 +52,8 @@ let bound = bind(lifted, lifted, lifted)
 
 // an interpreter
 let flatMap = {
-    run(f) {
-        return f(x).accept(this, x)
+    compose(f) {
+        return x => f(x).accept(this)
     },
     pure(f) {
         return x => f(x)
@@ -71,8 +71,8 @@ let flatMap = {
 
 // another interpreter
 let bindLast = {
-    run(f, x) {
-        return f(x).accept(this, x)
+    compose(f) {
+        return x => f(x).accept(this)
     },
     pure(f) {
         return x => f(x)
