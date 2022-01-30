@@ -29,8 +29,12 @@ function lift(f) {
     return (x) => Pure(f(x))
 }
 
+function pure(x) {
+    return value => Pure(value)
+}
+
 // the equivalent of the >>= operator
-function bind(... functions) {
+function bind(...functions) {
     let result = functions[0]
     for (let next of functions.slice(1)) {
         let previousResult = result
@@ -113,8 +117,8 @@ let exampleFunction = bind(
         return result
     }),
     x => {
-        if (x % 2 === 0) {
-            return Pure(x)
+        if (x % 2 === 0 || true) {
+            return pure(x)
         } else {
             return lift(
                 x => {
