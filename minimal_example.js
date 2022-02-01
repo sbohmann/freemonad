@@ -91,13 +91,13 @@ let bindLast = {
 const n = 7
 
 // using the flatMap interpreter
-console.log(flatMap.compose(bound)(n))
+console.log(flatMap.run(bound, n))
 
 // using Array.flatMap
 console.log(count(n).flatMap(count).flatMap(count))
 
 // using the bindLast interpreter
-console.log(bindLast.compose(bound)(n))
+console.log(bindLast.run(bound, n))
 
 let exampleFunction = bind(
     lift(n => {
