@@ -35,10 +35,11 @@ function count(x) {
 }
 
 function example(x) {
+    let result = [x, x / 2, x / 4]
     if (x >= 10) {
-        return FlatMap([x], digits)
+        return FlatMap(result, digits)
     } else {
-        return Return([x])
+        return Return(result)
     }
 }
 
@@ -63,4 +64,4 @@ function fbind(...f) {
     }
 }
 
-console.log(compose(fbind(count, example))(20))
+console.log(compose(fbind(count, example))(12))
