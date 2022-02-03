@@ -26,7 +26,7 @@ function Bind(lhs, rhs) {
 }
 
 function lift(f) {
-    return (x) => Pure(f(x))
+    return Pure(f)
 }
 
 // the equivalent of the >>= operator

@@ -14,7 +14,24 @@ function FlatMap(result, f) {
     }
 }
 
-function compose(f) {
+function fbind(...f) {
+    if (f.length < 1) {
+        throw new RangeError()
+    } else if (f.length === 1) {
+        return f[0]
+    } else {
+        return x => f[0](x).accept({
+            return(result) {
+                return FlatMap(result, fbind(... f.slice(1)))
+            },
+            flatMap(result, next) {
+                return FlatMap(result, fbind(next, ...f.slice(1)))
+            }
+        })
+    }
+}
+
+function unlift(f) {
     const interpreter = {
         return(result) {
             return result
@@ -25,6 +42,8 @@ function compose(f) {
     }
     return x => f(x).accept(interpreter)
 }
+
+// example functions
 
 function count(x) {
     let result = []
@@ -47,21 +66,4 @@ function digits(x) {
     return Return(Array.from(x.toString()))
 }
 
-function fbind(...f) {
-    if (f.length < 1) {
-        throw new RangeError()
-    } else if (f.length === 1) {
-        return f[0]
-    } else {
-        return x => f[0](x).accept({
-            return(result) {
-                return FlatMap(result, fbind(... f.slice(1)))
-            },
-            flatMap(result, next) {
-                return FlatMap(result, fbind(next, ...f.slice(1)))
-            }
-        })
-    }
-}
-
-console.log(compose(fbind(count, example))(12))
+console.log(unlift(fbind(count, example))(12))

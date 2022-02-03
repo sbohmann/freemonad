@@ -28,7 +28,24 @@ class FlatMap extends Free {
     }
 }
 
-function compose(f) {
+function fbind(...f) {
+    if (f.length < 1) {
+        throw new RangeError()
+    } else if (f.length === 1) {
+        return f[0]
+    } else {
+        return x => {
+            let free = f[0](x)
+            if (free instanceof Return) {
+                return new FlatMap(free.result, fbind(...f.slice(1)))
+            } else if (free instanceof FlatMap) {
+                return new FlatMap(free.result, fbind(free.f, ...f.slice(1)))
+            }
+        }
+    }
+}
+
+function unlift(f) {
     function interpret(free) {
         if (free instanceof Return) {
             return free.result
@@ -38,6 +55,8 @@ function compose(f) {
     }
     return x => interpret(f(x))
 }
+
+// example functions
 
 function count(x) {
     let result = []
@@ -60,21 +79,4 @@ function digits(x) {
     return new Return(Array.from(x.toString()))
 }
 
-function fbind(...f) {
-    if (f.length < 1) {
-        throw new RangeError()
-    } else if (f.length === 1) {
-        return f[0]
-    } else {
-        return x => {
-            let free = f[0](x)
-            if (free instanceof Return) {
-                return new FlatMap(free.result, fbind(...f.slice(1)))
-            } else if (free instanceof FlatMap) {
-                return new FlatMap(free.result, fbind(free.f, ...f.slice(1)))
-            }
-        }
-    }
-}
-
-console.log(compose(fbind(count, example))(12))
+console.log(unlift(fbind(count, example))(12))
