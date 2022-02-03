@@ -77,8 +77,4 @@ function fbind(...f) {
     }
 }
 
-function f(x) {
-    return new Return([x])
-}
-
 console.log(compose(fbind(count, example))(12))
