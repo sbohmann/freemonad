@@ -45,7 +45,9 @@ function fbind(...f) {
     }
 }
 
-function unlift(f) {
+// example interpreter, expecting array results and using Array.flatMap for FlatMap
+
+function arrayFlatMapInterpreter(f) {
     function interpret(free) {
         if (free instanceof Return) {
             return free.result
@@ -79,4 +81,4 @@ function digits(x) {
     return new Return(Array.from(x.toString()))
 }
 
-console.log(unlift(fbind(count, example))(12))
+console.log(arrayFlatMapInterpreter(fbind(count, example))(12))
